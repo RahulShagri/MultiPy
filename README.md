@@ -15,3 +15,7 @@ Run multiple python scripts from a central app.
 
 1. Save dashboard and open later
 2. Configure script information after adding scripts
+
+<h3>Screenshot</h3>
+
+![Screenshot](readme_resources/screenshot.JPG)
