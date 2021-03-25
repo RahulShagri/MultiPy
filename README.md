@@ -12,5 +12,6 @@ Run multiple python scripts from a central app.
 6. Run all scripts at once
 
 <h3>Upcoming features:</h3>
+
 1. Save dashboard and open later
 2. Configure script information after adding scripts
