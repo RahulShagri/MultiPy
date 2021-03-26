@@ -202,7 +202,7 @@ class CategoryHandler:
 
             with child(name=f"sub-child??{self.title}??{_temp_script_name_}", width=50, height=150):
                 add_image_button(name=f"delete??{self.title}??{_temp_script_name_}", value="icons/delete_script_button_dark.png", width=30, height=30, callback=self.delete_script)
-                #add_image_button(name=f"configure??{self.title}??{_temp_script_name_}", value="icons/configure_script_button_dark.png", width=30, height=30)
+                add_image_button(name=f"configure??{self.title}??{_temp_script_name_}", value="icons/configure_script_button_dark.png", width=30, height=30)
 
             add_text(f"{_temp_script_name_}", wrap=265)
 
@@ -331,7 +331,7 @@ class CategoryHandler:
                     add_image_button(name=f"delete??{self.title}??{script_name}",
                                      value="icons/delete_script_button_dark.png", width=30, height=30,
                                      callback=self.delete_script)
-                    # add_image_button(name=f"configure??{self.title}??{_temp_script_name_}", value="icons/configure_script_button_dark.png", width=30, height=30)
+                    add_image_button(name=f"configure??{self.title}??{script_name}", value="icons/configure_script_button_dark.png", width=30, height=30)
 
                 add_text(f"{script_name}", wrap=265)
 
@@ -439,3 +439,60 @@ def add_category():
         categories[category_name] = CategoryHandler(title=category_name)
 
         create_table(name=category_name) # Create new table in DB
+
+        # Show tool buttons
+        configure_item("view_button", show=True)
+        configure_item("collapse_expand_button", show=True)
+
+def show_edit_mode_switcher(sender):
+    tables, all_scripts = read_all_tables()
+
+    if sender == "view_button":
+
+        delete_item("view_button")
+
+        add_image_button(name="edit_button", value="icons/edit_button_dark.png", width=36, height=36,
+                         tip="Switch to edit mode", parent="Tools", before="tools_line", callback=show_edit_mode_switcher)
+
+        configure_item("add_category", show=False)
+
+        table_count = 0
+
+        for table in tables:
+
+            configure_item(f"add_script##{table[0]}", show=False)
+            configure_item(f"run_all##{table[0]}", show=False)
+            configure_item(f"delete_category##{table[0]}", show=False)
+
+            for scripts in all_scripts[table_count]:
+                for script in scripts:
+                    print(script)
+                    configure_item(f"delete??{table[0]}??{script}", show=False)
+                    configure_item(f"configure??{table[0]}??{script}", show=False)
+
+            table_count += 1
+
+    if sender == "edit_button":
+
+        delete_item("edit_button")
+
+        add_image_button(name="view_button", value="icons/view_button_dark.png", width=36, height=36,
+                         tip="Switch to view-only mode", parent="Tools", before="tools_line", callback=show_edit_mode_switcher)
+
+        configure_item("add_category", show=True)
+
+        table_count = 0
+
+        for table in tables:
+
+            configure_item(f"add_script##{table[0]}", show=True)
+            configure_item(f"run_all##{table[0]}", show=True)
+            configure_item(f"delete_category##{table[0]}", show=True)
+
+            for scripts in all_scripts[table_count]:
+                for script in scripts:
+                    print(script)
+                    configure_item(f"delete??{table[0]}??{script}", show=True)
+                    configure_item(f"configure??{table[0]}??{script}", show=True)
+
+            table_count += 1

@@ -84,3 +84,21 @@ def read_all_scripts(table: str):
     conn.close()
 
     return script_info
+
+def read_all_tables():
+    conn = sqlite3.connect("_temp_.db")
+    c = conn.cursor()
+
+    c.execute(f"SELECT name from sqlite_master where type=\"table\"")
+    tables = c.fetchall()
+
+    scripts = []
+
+    for table in tables:
+        c.execute(f"SELECT script_name FROM \"{table[0]}\"")
+        scripts.append(c.fetchall())
+
+    conn.commit()
+    conn.close()
+
+    return tables, scripts

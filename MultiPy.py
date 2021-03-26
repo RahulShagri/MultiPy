@@ -45,6 +45,13 @@ with window(name="Add scripts button", no_title_bar=True, no_resize=True, no_clo
         add_same_line(spacing=5.0)
         add_button("Cancel##AddCategory", width=220, callback=close_popups)
 
+with window(name="Tools", no_title_bar=True, no_resize=True, no_close=True, no_collapse=True, no_move=True,
+            x_pos=80, y_pos=630, autosize=True):
+
+    add_image_button(name="view_button", value="icons/view_button_dark.png", width=36, height=36, tip="Switch to view-only mode", show=False, callback=show_edit_mode_switcher)
+    add_same_line(spacing=10, name="tools_line")
+    add_image_button(name="collapse_expand_button", value="icons/collapse_expand_button_dark.png", width=36, height=36, tip="Collapse or expand all categories.", show=False)
+
 with window(name="Loaded scripts", no_title_bar=True, no_resize=True, no_close=True, no_collapse=True, no_move=True,
             x_pos=80, y_pos=40, width=1260, height=590):
 
