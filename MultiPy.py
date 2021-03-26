@@ -39,7 +39,7 @@ with window(name="Add scripts button", no_title_bar=True, no_resize=True, no_clo
     with popup(popupparent="add_category", name="Add new category", mousebutton=mvMouseButton_Left, modal=True):
         set_item_style_var(item="Add new category", style=mvGuiStyleVar_WindowPadding, value=[10, 10])
         add_dummy(name="addCategoryDummy01", height=10)
-        add_input_text(name="category_name", label="    Enter category name", hint="Category name", width=250)
+        add_input_text(name="category_name", label="    Enter category name", hint="Category name", width=250, on_enter=True, callback=add_category, callback_data=lambda: add_category)
         add_dummy(name="addCategoryDummy02", height=20)
         add_button("Add##AddCategory", width=220, callback=add_category, callback_data=lambda: add_category)
         add_same_line(spacing=5.0)

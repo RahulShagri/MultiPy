@@ -74,13 +74,12 @@ def read_to_run_all_scripts(table: str):
 
     return script_info
 
-def read_all_script_names(table: str):
+def read_all_scripts(table: str):
     conn = sqlite3.connect("_temp_.db")
     c = conn.cursor()
 
-    c.execute(f"SELECT script_name FROM \"{table}\"")
+    c.execute(f"SELECT script_name, thumbnail_path FROM \"{table}\"")
     script_info = c.fetchall()
-
     conn.commit()
     conn.close()
 
