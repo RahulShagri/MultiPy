@@ -19,6 +19,19 @@ You can choose a name for your categories and script, indicate whether your scri
 7. Switch to view-only mode to showcase your apps
 8. Save your dashboard and open it later
 
+<H3>Instructions</H3>
+
+1. Make sure you have Python 3.6 installed and working. 
+   
+2. Clone the repo:
+
+```git clone https://github.com/RahulShagri/MultiPy.git```
+3. Install prerequisites using pip. <b>Do NOT install it in a virtual environment. This is to make sure MultiPy can use all the packages for scripts that use globally installed packages.</b>:
+
+```pip install -r requirements.txt``` 
+
+4. Run the <i>SimpleDrawing.py</i> file to start the application.
+
 <h3>Demonstration</h3>
 
 <h4>Add and delete categories</h4>
