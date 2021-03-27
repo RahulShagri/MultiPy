@@ -1,7 +1,8 @@
 # MultiPy
 
-Run multiple python scripts from a central app.
+MultiPy lets you conveniently keep a track of your python scripts for personal use or showcase by loading and grouping them into categories. It allows you to either run each script individually or together with just one click.
 
+You set a name to your script, indicate whether your script requires a virtual environment to run and select the virtual environment you need, and also choose a thumbnail if you like.
 <h3>Features:</h3>
 
 1. Categorize all scripts
