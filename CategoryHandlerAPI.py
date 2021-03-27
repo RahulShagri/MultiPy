@@ -16,7 +16,7 @@ class CategoryHandler:
         self.parent = "Loaded scripts"
         self.script_count = 0
 
-        with tree_node(name=self.title, parent=self.parent, default_open=True):
+        with collapsing_header(name=self.title, parent=self.parent, default_open=True):
             add_dummy(name=f"{self.title}Dummy01", height=10)
             add_image_button(name=f"add_script##{self.title}", value="icons/add_script_button_dark.png", width=150, height=26)
             add_same_line(spacing=10)

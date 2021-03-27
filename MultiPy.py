@@ -24,7 +24,6 @@ with window("Main Window"):
 
     set_theme_item(mvGuiCol_TextDisabled, 143, 143, 143, 255)
     set_theme_item(mvGuiCol_Separator, 127, 127, 127, 255)
-    set_theme_item(mvGuiCol_Header, 0, 0, 0, 255)
 
     with menu_bar("Main menu bar"):
         with menu("File"):
