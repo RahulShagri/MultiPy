@@ -1,5 +1,9 @@
 # MultiPy
 
+![Intro](readme_resources/intro.gif)
+
+<h3>About</h3>
+
 MultiPy lets you conveniently keep a track of your python scripts for personal use or showcase by loading and grouping them into categories. It allows you to either run each script individually or together with just one click.
 
 You can choose a name for your categories and script, indicate whether your script requires a virtual environment to run and select the virtual environment you need, and also choose a thumbnail if you like to present your work better.
