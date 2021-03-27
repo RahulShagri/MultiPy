@@ -25,7 +25,7 @@ You can choose a name for your categories and script, indicate whether your scri
 
 ![add and delete scripts](readme_resources/add_delete_script.gif)
 
-<h4>Run scripts and swtich to view-only mode</h4>
+<h4>Run scripts and switch to view-only mode</h4>
 
 ![run scripts and view-only](readme_resources/run_script.gif)
 
