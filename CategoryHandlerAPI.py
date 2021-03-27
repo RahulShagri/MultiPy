@@ -2,9 +2,11 @@ from dearpygui.core import *
 from dearpygui.simple import *
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import asksaveasfilename
 from tkinter.filedialog import askdirectory
 from DatabaseHandlerAPI import *
 import threading
+import win32gui
 
 categories = {}
 
@@ -98,6 +100,12 @@ class CategoryHandler:
         delete_item(self.title)
         del categories[self.title]
         delete_table(self.title)
+
+        tables, temp = read_all_tables()
+
+        if not tables:
+            configure_item("Instructions", show=True)
+            configure_item("view_button", show=False)
 
     def add_script(self):
 
@@ -335,6 +343,9 @@ class CategoryHandler:
 
                 add_text(f"{script_name}", wrap=265)
 
+    # def configure_script(self):
+    #     with popup(popupparent=)
+
     def enable_venv(self):
         if get_value(f"Script uses virtual environment##{self.title}"):
             configure_item(f"venv_path??{self.title}", enabled=True)
@@ -432,8 +443,7 @@ def add_category():
 
         close_popup("Add new category")
 
-        if does_item_exist("Instructions"):
-            delete_item("Instructions")
+        configure_item("Instructions", show=False)
 
         # Creating new category tree nodes
         categories[category_name] = CategoryHandler(title=category_name)
@@ -442,7 +452,6 @@ def add_category():
 
         # Show tool buttons
         configure_item("view_button", show=True)
-        configure_item("collapse_expand_button", show=True)
 
 def show_edit_mode_switcher(sender):
     tables, all_scripts = read_all_tables()
@@ -455,6 +464,7 @@ def show_edit_mode_switcher(sender):
                          tip="Switch to edit mode", parent="Tools", before="tools_line", callback=show_edit_mode_switcher)
 
         configure_item("add_category", show=False)
+        configure_item("File", show=False)
 
         table_count = 0
 
@@ -466,7 +476,6 @@ def show_edit_mode_switcher(sender):
 
             for scripts in all_scripts[table_count]:
                 for script in scripts:
-                    print(script)
                     configure_item(f"delete??{table[0]}??{script}", show=False)
                     configure_item(f"configure??{table[0]}??{script}", show=False)
 
@@ -480,6 +489,7 @@ def show_edit_mode_switcher(sender):
                          tip="Switch to view-only mode", parent="Tools", before="tools_line", callback=show_edit_mode_switcher)
 
         configure_item("add_category", show=True)
+        configure_item("File", show=True)
 
         table_count = 0
 
@@ -491,8 +501,95 @@ def show_edit_mode_switcher(sender):
 
             for scripts in all_scripts[table_count]:
                 for script in scripts:
-                    print(script)
                     configure_item(f"delete??{table[0]}??{script}", show=True)
                     configure_item(f"configure??{table[0]}??{script}", show=True)
 
             table_count += 1
+
+def save_tool():
+    Tk().withdraw()
+
+    file_path = asksaveasfilename(title="MultiPy Save window",
+                                  initialfile="MultiPy Dashboard",
+                                  filetypes=[("MultiPy File (*.mpy)", "*.mpy")],
+                                  defaultextension=[("MultiPy File (*.mpy)", "*.mpy")])
+    hwnd = win32gui.FindWindow(None, "MultiPy")
+    win32gui.SetForegroundWindow(hwnd)
+
+    if file_path:
+        save_all(file_path=file_path)
+
+def open_tool():
+    Tk().withdraw()
+
+    file_path = askopenfilename(title="MultiPy Open window",
+                                filetypes=[("MultiPy File (*.mpy)", "*.mpy")],
+                                defaultextension=[("MultiPy File (*.mpy)", "*.mpy")])
+    hwnd = win32gui.FindWindow(None, "MultiPy")
+    win32gui.SetForegroundWindow(hwnd)
+
+    if file_path:
+        global categories
+        os.remove("_temp_.db")
+        categories = {}
+
+        original = file_path
+        target = os.path.abspath("_temp_.db")
+        shutil.copyfile(original, target)
+
+        delete_item("Loaded scripts", children_only=True)
+        configure_item("view_button", show=True)
+
+        with child("Instructions", height=200, show=False, parent="Loaded scripts"):
+            add_dummy(name="loadedScriptsDummy01", height=15)
+            add_text("INSTRUCTIONS:")
+            add_dummy(name="loadedScriptsDummy01", height=20)
+            add_text(">    Click on \"Add new category\" button to get started.")
+            add_text(">    Enter a name and click \"Add\".")
+            add_text(">    Click on \"Add new python script\", and enter all the details as required.")
+            add_text(">    Click on the thumbnails to run individual scripts or click on \"Run all\" to run all the scripts in that category.")
+            add_dummy(name="dummy03", height=20)
+            # add_text("You can find more information in the help menu.")
+
+
+
+        tables, all_scripts = read_all()
+
+        if not tables:
+            configure_item("Instructions", show=True)
+            configure_item("view_button", show=False)
+
+        table_count = 0
+        script_count = 0
+
+        for table in tables:
+            categories[table[0]] = CategoryHandler(title=table[0])
+
+            parent = table[0]
+
+            for script_info in all_scripts[table_count]:
+
+                if script_count > 0:
+                    if script_count % 3 != 0:
+                        add_same_line(parent=parent)
+                    else:
+                        add_dummy(height=20, parent=parent)
+
+                script_count += 1
+
+                with child(name=f"child??{table[0]}??{script_info[0]}", parent=parent, width=400, height=210):
+                    add_image_button(f"{table[0]}??{script_info[0]}", value=script_info[4],
+                                     width=250, height=141, frame_padding=5, callback=categories[table[0]].run_script_dispatcher)
+                    add_same_line(spacing=5)
+
+                    with child(name=f"sub-child??{table[0]}??{script_info[0]}", width=50, height=150):
+                        add_image_button(name=f"delete??{table[0]}??{script_info[0]}",
+                                         value="icons/delete_script_button_dark.png", width=30, height=30,
+                                         callback=categories[table[0]].delete_script)
+                        add_image_button(name=f"configure??{table[0]}??{script_info[0]}",
+                                         value="icons/configure_script_button_dark.png", width=30, height=30)
+
+                    add_text(f"{script_info[0]}", wrap=265)
+
+            table_count += 1
+            script_count = 0

@@ -2,11 +2,11 @@ from dearpygui.core import *
 from dearpygui.simple import *
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import asksaveasfilename
 import os
 import threading
 from CategoryHandlerAPI import  *
 from DatabaseHandlerAPI import *
-
 
 with window("Main Window"):
     # Main Window styling
@@ -28,8 +28,8 @@ with window("Main Window"):
 
     with menu_bar("Main menu bar"):
         with menu("File"):
-            add_menu_item("Test item01")
-            add_menu_item("Test item02")
+            add_menu_item("Save dashboard", callback=save_tool)
+            add_menu_item("Open dashboard", callback=open_tool)
 
 with window(name="Add scripts button", no_title_bar=True, no_resize=True, no_close=True, no_collapse=True, no_move=True,
             x_pos=1070, y_pos=630, autosize=True):
@@ -50,18 +50,17 @@ with window(name="Tools", no_title_bar=True, no_resize=True, no_close=True, no_c
 
     add_image_button(name="view_button", value="icons/view_button_dark.png", width=36, height=36, tip="Switch to view-only mode", show=False, callback=show_edit_mode_switcher)
     add_same_line(spacing=10, name="tools_line")
-    add_image_button(name="collapse_expand_button", value="icons/collapse_expand_button_dark.png", width=36, height=36, tip="Collapse or expand all categories.", show=False)
 
 with window(name="Loaded scripts", no_title_bar=True, no_resize=True, no_close=True, no_collapse=True, no_move=True,
             x_pos=80, y_pos=40, width=1260, height=590):
 
-    with child("Instructions"):
+    with child("Instructions", height=200):
         add_dummy(name="loadedScriptsDummy01", height=15)
         add_text("INSTRUCTIONS:")
         add_dummy(name="loadedScriptsDummy01", height=20)
         add_text(">    Click on \"Add new category\" button to get started.")
         add_text(">    Enter a name and click \"Add\".")
-        add_text(">    Click on \"Add new python script\", and enter a name for the script and enter the other details as required.")
+        add_text(">    Click on \"Add new python script\", and enter all the details as required.")
         add_text(">    Click on the thumbnails to run individual scripts or click on \"Run all\" to run all the scripts in that category.")
         add_dummy(name="dummy03", height=20)
         #add_text("You can find more information in the help menu.")
