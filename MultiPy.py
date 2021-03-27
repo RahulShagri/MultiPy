@@ -31,7 +31,7 @@ with window("Main Window"):
             add_menu_item("Open dashboard", callback=open_tool)
 
 with window(name="Add scripts button", no_title_bar=True, no_resize=True, no_close=True, no_collapse=True, no_move=True,
-            x_pos=1070, y_pos=630, autosize=True):
+            x_pos=1040, y_pos=630, autosize=True):
 
     add_image_button(name="add_category", value="icons/add_category_button_dark.png", width=250, height=36)
 
@@ -45,13 +45,13 @@ with window(name="Add scripts button", no_title_bar=True, no_resize=True, no_clo
         add_button("Cancel##AddCategory", width=220, callback=close_popups)
 
 with window(name="Tools", no_title_bar=True, no_resize=True, no_close=True, no_collapse=True, no_move=True,
-            x_pos=80, y_pos=630, autosize=True):
+            x_pos=50, y_pos=630, autosize=True):
 
     add_image_button(name="view_button", value="icons/view_button_dark.png", width=36, height=36, tip="Switch to view-only mode", show=False, callback=show_edit_mode_switcher)
     add_same_line(spacing=10, name="tools_line")
 
 with window(name="Loaded scripts", no_title_bar=True, no_resize=True, no_close=True, no_collapse=True, no_move=True,
-            x_pos=80, y_pos=40, width=1260, height=590):
+            x_pos=50, y_pos=40, width=1260, height=590):
 
     with child("Instructions", height=200):
         add_dummy(name="loadedScriptsDummy01", height=15)

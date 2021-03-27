@@ -7,6 +7,7 @@ from tkinter.filedialog import askdirectory
 from DatabaseHandlerAPI import *
 import threading
 import win32gui
+import re
 
 categories = {}
 
@@ -16,7 +17,7 @@ class CategoryHandler:
         self.parent = "Loaded scripts"
         self.script_count = 0
 
-        with collapsing_header(name=self.title, parent=self.parent, default_open=True):
+        with collapsing_header(name=self.title, parent=self.parent):
             add_dummy(name=f"{self.title}Dummy01", height=10)
             add_image_button(name=f"add_script##{self.title}", value="icons/add_script_button_dark.png", width=150, height=26)
             add_same_line(spacing=10)
@@ -67,14 +68,14 @@ class CategoryHandler:
 
         add_dummy(name=f"{self.title}DummySeparator", height=10, parent=self.parent)
 
-    def close_popups(self, sender):
+    def close_popups(self, sender, data=""):
         if sender == f"Cancel##AddScript??{self.title}":
             set_value(f"script_name??{self.title}", "")
             set_value(f"script_path??{self.title}", "")
             set_value(f"Script uses virtual environment##{self.title}", False)
             set_value(f"venv_path??{self.title}", "")
             set_value(f"thumbnail_path??{self.title}", "")
-            self.enable_venv()
+            self.enable_venv(f"Script uses virtual environment##{self.title}")
             clear_drawing(f"thumbnail??{self.title}")
             draw_polyline(drawing=f"thumbnail??{self.title}", points=[[0, 0], [410, 0], [410, 231], [0, 231]],
                           color=[255, 0, 0], thickness=1, closed=True)
@@ -96,8 +97,12 @@ class CategoryHandler:
         if sender == f"No##DeleteCategory{self.title}":
             close_popup(f"Are you sure you want to delete this category?##{self.title}")
 
+        if re.search("Update", sender):
+            close_popup(f"Configure script##{self.title}??{data}")
+
     def delete_category(self):
         delete_item(self.title)
+        delete_item(f"{self.title}DummySeparator")
         del categories[self.title]
         delete_table(self.title)
 
@@ -210,7 +215,73 @@ class CategoryHandler:
 
             with child(name=f"sub-child??{self.title}??{_temp_script_name_}", width=50, height=150):
                 add_image_button(name=f"delete??{self.title}??{_temp_script_name_}", value="icons/delete_script_button_dark.png", width=30, height=30, callback=self.delete_script)
-                add_image_button(name=f"configure??{self.title}??{_temp_script_name_}", value="icons/configure_script_button_dark.png", width=30, height=30)
+                #add_image_button(name=f"configure??{self.title}??{_temp_script_name_}", value="icons/configure_script_button_dark.png", width=30, height=30)
+
+                # # Popup for configuring script info
+                #
+                # with popup(popupparent=f"configure??{self.title}??{_temp_script_name_}",
+                #            name=f"Configure script##{self.title}??{_temp_script_name_}", mousebutton=mvMouseButton_Left, modal=True):
+                #
+                #     script_info = get_script_info(table=self.title, script=_temp_script_name_)
+                #
+                #     set_item_style_var(item=f"Configure script##{self.title}??{_temp_script_name_}", style=mvGuiStyleVar_WindowPadding,
+                #                        value=[10, 10])
+                #     add_dummy(name="addScriptDummy01", height=10)
+                #
+                #     # script name
+                #     add_input_text(name=f"configure_script_name??{self.title}??{_temp_script_name_}", label="    Enter script name",
+                #                    hint="Script name", tip="Leave blank to set it the same as the file name.",
+                #                    width=250)
+                #
+                #     set_value(f"configure_script_name??{self.title}??{_temp_script_name_}", value=script_info[0])
+                #
+                #     add_dummy(name="addScriptDummy02", height=20)
+                #
+                #     # script path
+                #     add_input_text(name=f"configure_script_path??{self.title}??{_temp_script_name_}", label="", hint="Script path", width=250,
+                #                    readonly=True)
+                #
+                #     set_value(f"configure_script_path??{self.title}??{_temp_script_name_}", value=script_info[1])
+                #
+                #     add_same_line(spacing=5)
+                #     add_button(name=f"Find script##configure??{self.title}??{_temp_script_name_}", width=150, callback=self.find_script, callback_data=_temp_script_name_)
+                #     add_dummy(name="addScriptDummy03", height=20)
+                #
+                #     # venv
+                #     add_checkbox(name=f"Script uses virtual environment##configure??{self.title}??{_temp_script_name_}", callback=self.enable_venv, callback_data=_temp_script_name_)
+                #     add_dummy(name="addScriptDummy04", height=20)
+                #     add_input_text(name=f"configure_venv_path??{self.title}??{_temp_script_name_}", label="", hint="Venv folder path", width=250,
+                #                    enabled=False, readonly=True)
+                #
+                #     if script_info[2] == "":
+                #         set_value(f"Script uses virtual environment##configure??{self.title}??{_temp_script_name_}", True)
+                #         set_value(f"configure_venv_path??{self.title}??{_temp_script_name_}", script_info[3])
+                #     else:
+                #         set_value(f"Script uses virtual environment##configure??{self.title}??{_temp_script_name_}", False)
+                #
+                #     add_same_line(spacing=5)
+                #     add_button(name=f"Find venv folder##configure??{self.title}??{_temp_script_name_}", width=150, enabled=False,
+                #                callback=self.find_venv, callback_data=_temp_script_name_)
+                #     add_dummy(name="addScriptDummy05", height=20)
+                #
+                #     #thumbnail
+                #     add_input_text(name=f"configure_thumbnail_path??{self.title}??{_temp_script_name_}", label="", hint="Thumbnail file path",
+                #                    width=250, readonly=True)
+                #
+                #     if script_info[4] == "icons/default_thumbnail.jpg": set_value(f"configure_thumbnail_path??{self.title}??{_temp_script_name_}", "")
+                #     else: set_value(f"configure_thumbnail_path??{self.title}??{_temp_script_name_}", script_info[4])
+                #
+                #     add_same_line(spacing=5)
+                #     add_button(name=f"Add thumbnail##configure??{self.title}??{_temp_script_name_}", width=150,
+                #                tip="Leave blank to set it to default.", callback=self.find_thumbnail, callback_data=_temp_script_name_)
+                #     add_dummy(name="addScriptDummy06", height=20)
+                #     add_drawing(name=f"configure_thumbnail??{self.title}??{_temp_script_name_}", width=410, height=231)
+                #     draw_image(f"configure_thumbnail??{self.title}??{_temp_script_name_}", file=script_info[4], pmin=[0,0], pmax=[410, 232])
+                #
+                #     add_dummy(name="addScriptDummy06", height=20)
+                #     add_button(f"Update##UpdateScript??{self.title}??{_temp_script_name_}", width=210, callback=self.update_script, callback_data=lambda: self.update_script(data=_temp_script_name_, old_script_name=_temp_script_name_))
+                #     add_same_line(spacing=5.0)
+                #     add_button(f"Cancel##UpdateScript??{self.title}??{_temp_script_name_}", width=210, callback=self.close_popups, callback_data=_temp_script_name_)
 
             add_text(f"{_temp_script_name_}", wrap=265)
 
@@ -223,7 +294,7 @@ class CategoryHandler:
         set_value(f"Script uses virtual environment##{self.title}", False)
         set_value(f"venv_path??{self.title}", "")
         set_value(f"thumbnail_path??{self.title}", "")
-        self.enable_venv()
+        self.enable_venv(f"Script uses virtual environment##{self.title}")
         clear_drawing(f"thumbnail??{self.title}")
         draw_polyline(drawing=f"thumbnail??{self.title}", points=[[0, 0], [410, 0], [410, 231], [0, 231]],
                       color=[255, 0, 0], thickness=1, closed=True)
@@ -339,23 +410,37 @@ class CategoryHandler:
                     add_image_button(name=f"delete??{self.title}??{script_name}",
                                      value="icons/delete_script_button_dark.png", width=30, height=30,
                                      callback=self.delete_script)
-                    add_image_button(name=f"configure??{self.title}??{script_name}", value="icons/configure_script_button_dark.png", width=30, height=30)
+                    #add_image_button(name=f"configure??{self.title}??{script_name}", value="icons/configure_script_button_dark.png", width=30, height=30)
 
                 add_text(f"{script_name}", wrap=265)
 
-    # def configure_script(self):
-    #     with popup(popupparent=)
+    # def update_script(self, data, old_script_name):
+    #     script_name = get_value(f"configure_script_name??{self.title}??{data}")
+    #     script_path = get_value(f"configure_script_path??{self.title}??{data}")
+    #     venv = get_value(f"Script uses virtual environment##configure??{self.title}??{data}")
+    #     venv_path = get_value(f"configure_venv_path??{self.title}??{data}")
+    #     thumbnail_path = get_value(f"configure_thumbnail_path??{self.title}??{data}")
+    #
+    #     update_script(table=self.title, old_script_name=old_script_name, script_name=script_name, script_path=script_path, venv=venv, venv_path=venv_path, thumbnail_path=thumbnail_path)
 
-    def enable_venv(self):
-        if get_value(f"Script uses virtual environment##{self.title}"):
+    def enable_venv(self, sender, data=""):
+        if get_value(sender):
             configure_item(f"venv_path??{self.title}", enabled=True)
             configure_item(f"Find venv folder##{self.title}", enabled=True)
+
+            if re.search("configure", sender):
+                configure_item(f"configure_venv_path??{self.title}??{data}", enabled=True)
+                configure_item(f"Find venv folder##configure??{self.title}??{data}", enabled=True)
 
         else:
             configure_item(f"venv_path??{self.title}", enabled=False)
             configure_item(f"Find venv folder##{self.title}", enabled=False)
 
-    def find_script(self):
+            if re.search("configure", sender):
+                configure_item(f"configure_venv_path??{self.title}??{data}", enabled=False)
+                configure_item(f"Find venv folder##configure??{self.title}??{data}", enabled=False)
+
+    def find_script(self, sender, data=""):
         Tk().withdraw()
 
         file_path = askopenfilename(title="MultiPy find script window",
@@ -365,10 +450,13 @@ class CategoryHandler:
         if file_path:
             set_value(f"script_path??{self.title}", file_path)
 
+            if re.search("configure", sender):
+                set_value(f"configure_script_path??{self.title}??{data}", file_path)
+
             if does_item_exist("Please select a script."):
                 delete_item("Please select a script.")
 
-    def find_venv(self):
+    def find_venv(self, sender, data=""):
         Tk().withdraw()
 
         folder_path = askdirectory(title="MultiPy find venv window")
@@ -376,10 +464,13 @@ class CategoryHandler:
         if folder_path:
             set_value(f"venv_path??{self.title}", folder_path)
 
+            if re.search("configure", sender):
+                set_value(f"configure_venv_path??{self.title}??{data}", folder_path)
+
             if does_item_exist("Please select a venv path."):
                 delete_item("Please select a venv path.")
 
-    def find_thumbnail(self):
+    def find_thumbnail(self, sender, data=""):
         Tk().withdraw()
 
         file_path = askopenfilename(title="MultiPy find thumbnail window",
@@ -390,6 +481,13 @@ class CategoryHandler:
             set_value(f"thumbnail_path??{self.title}", file_path)
             clear_drawing(f"thumbnail??{self.title}")
             draw_image(drawing=f"thumbnail??{self.title}", file=get_value(f"thumbnail_path??{self.title}"), pmin=[0,0], pmax=[410,231])
+
+            if re.search("configure", sender):
+                set_value(f"configure_thumbnail_path??{self.title}??{data}", file_path)
+                clear_drawing(f"configure_thumbnail??{self.title}??{data}")
+                draw_image(drawing=f"configure_thumbnail??{self.title}??{data}", file=get_value(f"thumbnail_path??{self.title}"),
+                           pmin=[0, 0], pmax=[410, 231])
+
 
 
 def close_popups(sender):
@@ -551,7 +649,6 @@ def open_tool():
             add_dummy(name="dummy03", height=20)
             # add_text("You can find more information in the help menu.")
 
-
         tables, all_scripts = read_all()
 
         if not tables:
@@ -585,8 +682,8 @@ def open_tool():
                         add_image_button(name=f"delete??{table[0]}??{script_info[0]}",
                                          value="icons/delete_script_button_dark.png", width=30, height=30,
                                          callback=categories[table[0]].delete_script)
-                        add_image_button(name=f"configure??{table[0]}??{script_info[0]}",
-                                         value="icons/configure_script_button_dark.png", width=30, height=30)
+                        # add_image_button(name=f"configure??{table[0]}??{script_info[0]}",
+                        #                  value="icons/configure_script_button_dark.png", width=30, height=30)
 
                     add_text(f"{script_info[0]}", wrap=265)
 
