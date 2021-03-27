@@ -12,12 +12,20 @@ You can choose a name for your categories and script, indicate whether your scri
 4. Set a thumbnail for better presentation
 5. Run scripts individually
 6. Run all scripts at once
+7. Switch to view-only mode to showcase your apps
+8. Save your dashboard and open it later
 
-<h3>Upcoming features:</h3>
+<h3>Demonstration</h3>
 
-1. Save dashboard and open later
-2. Configure script information after adding scripts
+<h4>Add and delete categories</h4>
 
-<h3>Screenshot</h3>
+![add and delete categories](readme_resources/add_delete_category.gif)
 
-![Screenshot](readme_resources/screenshot.JPG)
+<h4>Add and delete scripts</h4>
+
+![add and delete scripts](readme_resources/add_delete_script.gif)
+
+<h4>Run scripts and swtich to view-only mode</h4>
+
+![run scripts and view-only](readme_resources/run_script.gif)
+
