@@ -247,7 +247,7 @@ class CategoryHandler:
                 folder_path += f"{file_path[folder]}\\"
 
             # Main run command on cmd
-            os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]}"')
+            os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]} & exit"')
 
         else:
 
@@ -255,7 +255,7 @@ class CategoryHandler:
                 folder_path += f"{file_path[folder]}\\"
 
             # Main run command on cmd
-            os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]}"')
+            os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]} & exit"')
 
     def run_script_dispatcher(self, sender):
         run_script_thread = threading.Thread(name="runScriptThread", target=self.run_script, args=(sender,),
@@ -550,7 +550,6 @@ def open_tool():
             add_text(">    Click on the thumbnails to run individual scripts or click on \"Run all\" to run all the scripts in that category.")
             add_dummy(name="dummy03", height=20)
             # add_text("You can find more information in the help menu.")
-
 
 
         tables, all_scripts = read_all()
