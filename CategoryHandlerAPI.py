@@ -474,8 +474,8 @@ class CategoryHandler:
         Tk().withdraw()
 
         file_path = askopenfilename(title="MultiPy find thumbnail window",
-                                    filetypes=[("PNG (*.png)", "*.png"), ("JPG (*.jpg)", "*.jpg")],
-                                    defaultextension=[("PNG (*.png)", "*.png"), ("JPG (*.jpg)", "*.jpg")])
+                                    filetypes=[("PNG (*.png)", "*.png"), ("JPEG (*.jpg)", "*.jpg")],
+                                    defaultextension=[("PNG (*.png)", "*.png"), ("JPEG (*.jpg)", "*.jpg")])
 
         if file_path:
             set_value(f"thumbnail_path??{self.title}", file_path)
@@ -487,7 +487,6 @@ class CategoryHandler:
                 clear_drawing(f"configure_thumbnail??{self.title}??{data}")
                 draw_image(drawing=f"configure_thumbnail??{self.title}??{data}", file=get_value(f"thumbnail_path??{self.title}"),
                            pmin=[0, 0], pmax=[410, 231])
-
 
 
 def close_popups(sender):
