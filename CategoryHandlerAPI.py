@@ -357,7 +357,7 @@ class CategoryHandler:
                 folder_path += f"{file_path[folder]}\\"
 
             # Main run command on cmd
-            os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]}"')
+            os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]} & exit"')
 
         else:
 
