@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import shutil
 
 def create_database():
 
@@ -96,6 +97,41 @@ def read_all_tables():
 
     for table in tables:
         c.execute(f"SELECT script_name FROM \"{table[0]}\"")
+        scripts.append(c.fetchall())
+
+    conn.commit()
+    conn.close()
+
+    return tables, scripts
+
+def get_script_info(table: str, script: str):
+    conn = sqlite3.connect("_temp_.db")
+    c = conn.cursor()
+
+    c.execute(f"SELECT * FROM \"{table}\" WHERE script_name=\"{script}\"")
+    script_info = c.fetchone()
+
+    conn.commit()
+    conn.close()
+
+    return script_info
+
+def save_all(file_path: str):
+    original = os.path.abspath("_temp_.db")
+    target = file_path
+    shutil.copyfile(original, target)
+
+def read_all():
+    conn = sqlite3.connect("_temp_.db")
+    c = conn.cursor()
+
+    c.execute(f"SELECT name from sqlite_master where type=\"table\"")
+    tables = c.fetchall()
+
+    scripts = []
+
+    for table in tables:
+        c.execute(f"SELECT * FROM \"{table[0]}\"")
         scripts.append(c.fetchall())
 
     conn.commit()
