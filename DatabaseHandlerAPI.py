@@ -18,17 +18,18 @@ def create_table(name: str):
                         script_path text,
                         venv text,
                         venv_path text,
+                        cmd text,
                         thumbnail_path text)""")
 
     conn.commit()
     conn.close()
 
-def add_script(table: str, script_name: str, script_path: str, thumbnail_path="icons/default_thumbnail.jpg", venv=str, venv_path=""):
+def add_script(table: str, script_name: str, script_path: str, thumbnail_path="icons/default_thumbnail.jpg", venv=str, venv_path="", cmd=""):
     conn = sqlite3.connect("_temp_.db")
     c = conn.cursor()
 
-    c.execute(f"""INSERT INTO \"{table}\" (script_name, script_path, venv, venv_path, thumbnail_path)
-            VALUES (?, ?, ?, ?, ?)""", (script_name, script_path, venv, venv_path, thumbnail_path))
+    c.execute(f"""INSERT INTO \"{table}\" (script_name, script_path, venv, venv_path, thumbnail_path, cmd)
+            VALUES (?, ?, ?, ?, ?, ?)""", (script_name, script_path, venv, venv_path, thumbnail_path, cmd))
 
     conn.commit()
     conn.close()
@@ -55,7 +56,7 @@ def read_to_run_script(table: str, script_name: str):
     conn = sqlite3.connect("_temp_.db")
     c = conn.cursor()
 
-    c.execute(f"SELECT script_path, venv, venv_path FROM \"{table}\" WHERE script_name=\"{script_name}\"")
+    c.execute(f"SELECT script_path, venv, venv_path, cmd FROM \"{table}\" WHERE script_name=\"{script_name}\"")
     script_info = c.fetchone()
 
     conn.commit()
@@ -67,7 +68,7 @@ def read_to_run_all_scripts(table: str):
     conn = sqlite3.connect("_temp_.db")
     c = conn.cursor()
 
-    c.execute(f"SELECT script_path, venv, venv_path FROM \"{table}\"")
+    c.execute(f"SELECT script_path, venv, venv_path, cmd FROM \"{table}\"")
     script_info = c.fetchall()
 
     conn.commit()
