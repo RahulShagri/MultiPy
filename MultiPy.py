@@ -7,6 +7,10 @@ import os
 import threading
 from CategoryHandlerAPI import  *
 from DatabaseHandlerAPI import *
+import webbrowser
+
+def open_website(sender, data):
+    webbrowser.open(data)
 
 with window("Main Window"):
     # Main Window styling
@@ -29,6 +33,8 @@ with window("Main Window"):
         with menu("File"):
             add_menu_item("Save dashboard", callback=save_tool)
             add_menu_item("Open dashboard", callback=open_tool)
+        with menu("Help"):
+            add_menu_item("About", callback=open_website, callback_data="https://github.com/RahulShagri/MultiPy")
 
 with window(name="Add scripts button", no_title_bar=True, no_resize=True, no_close=True, no_collapse=True, no_move=True,
             x_pos=1040, y_pos=630, autosize=True):
@@ -62,7 +68,7 @@ with window(name="Loaded scripts", no_title_bar=True, no_resize=True, no_close=T
         add_text(">    Click on \"Add new python script\", and enter all the details as required.")
         add_text(">    Click on the thumbnails to run individual scripts or click on \"Run all\" to run all the scripts in that category.")
         add_dummy(name="dummy03", height=20)
-        #add_text("You can find more information in the help menu.")
+        add_text("You can find more information in the help menu.")
 
 def main():
     create_database()
