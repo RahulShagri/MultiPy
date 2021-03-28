@@ -53,15 +53,17 @@ class CategoryHandler:
                 add_button(name=f"Find venv folder##{self.title}", width=150, enabled=False, callback=self.find_venv)
                 add_dummy(name="addScriptDummy05", height=20)
 
+                add_checkbox(name=f"Show command prompt (cmd) when running##{self.title}")
+                add_dummy(name="addScriptDummy06", height=20)
+
                 add_input_text(name=f"thumbnail_path??{self.title}", label="", hint="Thumbnail file path", width=250, readonly=True)
                 add_same_line(spacing=5)
                 add_button(name=f"Add thumbnail##{self.title}", width=150, tip="Leave blank to set it to default.", callback=self.find_thumbnail)
-                add_dummy(name="addScriptDummy06", height=20)
+                add_dummy(name="addScriptDummy07", height=20)
                 add_drawing(name=f"thumbnail??{self.title}", width=410, height=231)
                 draw_polyline(drawing=f"thumbnail??{self.title}", points=[[0,0], [410,0], [410,231], [0,231]], color=[255,0,0], thickness=1, closed=True)
 
-
-                add_dummy(name="addScriptDummy06", height=20)
+                add_dummy(name="addScriptDummy08", height=20)
                 add_button(f"Add##AddScript??{self.title}", width=210, callback=self.add_script, callback_data=lambda: self.add_script)
                 add_same_line(spacing=5.0)
                 add_button(f"Cancel##AddScript??{self.title}", width=210, callback=self.close_popups)
@@ -76,6 +78,7 @@ class CategoryHandler:
             set_value(f"venv_path??{self.title}", "")
             set_value(f"thumbnail_path??{self.title}", "")
             self.enable_venv(f"Script uses virtual environment##{self.title}")
+            set_value(f"Show command prompt (cmd) when running##{self.title}", False)
             clear_drawing(f"thumbnail??{self.title}")
             draw_polyline(drawing=f"thumbnail??{self.title}", points=[[0, 0], [410, 0], [410, 231], [0, 231]],
                           color=[255, 0, 0], thickness=1, closed=True)
@@ -183,14 +186,16 @@ class CategoryHandler:
                        script_path=get_value(f"script_path??{self.title}"),
                        thumbnail_path=_temp_path_,
                        venv="True",
-                       venv_path=get_value(f"venv_path??{self.title}"))
+                       venv_path=get_value(f"venv_path??{self.title}"),
+                       cmd=str(get_value(f"Show command prompt (cmd) when running##{self.title}")))
 
         else:
             add_script(table=self.title,
                        script_name=_temp_script_name_,
                        script_path=get_value(f"script_path??{self.title}"),
                        thumbnail_path=_temp_path_,
-                       venv="False")
+                       venv="False",
+                       cmd=str(get_value(f"Show command prompt (cmd) when running##{self.title}")))
 
         if self.script_count > 0:
             if self.script_count % 3 != 0:
@@ -295,6 +300,7 @@ class CategoryHandler:
         set_value(f"venv_path??{self.title}", "")
         set_value(f"thumbnail_path??{self.title}", "")
         self.enable_venv(f"Script uses virtual environment##{self.title}")
+        set_value(f"Show command prompt (cmd) when running##{self.title}", False)
         clear_drawing(f"thumbnail??{self.title}")
         draw_polyline(drawing=f"thumbnail??{self.title}", points=[[0, 0], [410, 0], [410, 231], [0, 231]],
                       color=[255, 0, 0], thickness=1, closed=True)
@@ -318,7 +324,11 @@ class CategoryHandler:
                 folder_path += f"{file_path[folder]}\\"
 
             # Main run command on cmd
-            os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]} & exit"')
+
+            if script_info[3] == "True":
+                os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+            else:
+                os.system(f'cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
 
         else:
 
@@ -326,7 +336,10 @@ class CategoryHandler:
                 folder_path += f"{file_path[folder]}\\"
 
             # Main run command on cmd
-            os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]} & exit"')
+            if script_info[3] == "True":
+                os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+            else:
+                os.system(f'cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
 
     def run_script_dispatcher(self, sender):
         run_script_thread = threading.Thread(name="runScriptThread", target=self.run_script, args=(sender,),
@@ -357,7 +370,10 @@ class CategoryHandler:
                 folder_path += f"{file_path[folder]}\\"
 
             # Main run command on cmd
-            os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]} & exit"')
+            if script_info[3] == "True":
+                os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+            else:
+                os.system(f'cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
 
         else:
 
@@ -365,8 +381,11 @@ class CategoryHandler:
                 folder_path += f"{file_path[folder]}\\"
 
             # Main run command on cmd
-            os.system(
-                f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & {file_path[-1]}"')
+            if script_info[3] == "True":
+                os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]}"')
+            else:
+                os.system(f'cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]}"')
+
 
     def delete_script(self, sender):
         parent = self.title
