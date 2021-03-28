@@ -35,6 +35,10 @@ You can choose a name for your categories and scripts, indicate whether your scr
 ```pip install -r requirements.txt```
 
 4. Run the <i>MultiPy.py</i> file to start the application
+5. Ensure you enter unique names for each category
+5. Ensure you enter unique names for each script within a category. Choosing a name is optional. If left blank, the script file name will be chosen as the script name
+6. Select the virtual environment folder where the "Scripts" folder exists
+7. Choosing a thumbnail is optional. A default thumbnail will be used if left blank
 
 <h3>Demonstration</h3>
 
