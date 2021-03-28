@@ -326,9 +326,9 @@ class CategoryHandler:
             # Main run command on cmd
 
             if script_info[3] == "True":
-                os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+                os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
             else:
-                os.system(f'cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+                os.system(f'cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
 
         else:
 
@@ -337,9 +337,9 @@ class CategoryHandler:
 
             # Main run command on cmd
             if script_info[3] == "True":
-                os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+                os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
             else:
-                os.system(f'cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+                os.system(f'cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
 
     def run_script_dispatcher(self, sender):
         run_script_thread = threading.Thread(name="runScriptThread", target=self.run_script, args=(sender,),
@@ -371,9 +371,9 @@ class CategoryHandler:
 
             # Main run command on cmd
             if script_info[3] == "True":
-                os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+                os.system(f'start cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
             else:
-                os.system(f'cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]} & exit"')
+                os.system(f'cmd /k "cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
 
         else:
 
@@ -382,9 +382,9 @@ class CategoryHandler:
 
             # Main run command on cmd
             if script_info[3] == "True":
-                os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]}"')
+                os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}""')
             else:
-                os.system(f'cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe {file_path[-1]}"')
+                os.system(f'cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}""')
 
 
     def delete_script(self, sender):
