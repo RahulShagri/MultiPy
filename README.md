@@ -26,9 +26,10 @@ You can choose a name for your categories and script, indicate whether your scri
 2. Clone the repo:
 
 ```git clone https://github.com/RahulShagri/MultiPy.git```
+
 3. Install prerequisites using pip. <b>Do NOT install it in a virtual environment. This is to make sure MultiPy can use all the packages for scripts that use globally installed packages.</b>:
 
-```pip install -r requirements.txt``` 
+```pip install -r requirements.txt```
 
 4. Run the <i>SimpleDrawing.py</i> file to start the application.
 
