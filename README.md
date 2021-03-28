@@ -24,7 +24,7 @@ You can choose a name for your categories and scripts, indicate whether your scr
 
 <b>Important note: MultiPy only works on Windows Operating System.</b>
 
-1. Make sure you have Python 3.6 installed and working
+1. Make sure you have Python 3.6 or later version installed and working
    
 2. Clone the repo:
 
