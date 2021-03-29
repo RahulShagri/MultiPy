@@ -140,12 +140,12 @@ def read_all():
 
     return tables, scripts
 
-def update_script(table: str, old_script_name: str, script_name: str, script_path: str, thumbnail_path="icons/default_thumbnail.jpg", venv=str, venv_path=""):
-    conn = sqlite3.connect("_temp_.db")
-    c = conn.cursor()
-
-    c.execute(f"""UPDATE \"{table}\" SET script_name = ?, script_path = ?, venv = ?, venv_path = ?, thumbnail_path = ? WHERE script_name = \"{old_script_name}\")""", (script_name, script_path, venv, venv_path, thumbnail_path))
-
-
-    conn.commit()
-    conn.close()
+# def update_script(table: str, old_script_name: str, script_name: str, script_path: str, thumbnail_path="icons/default_thumbnail.jpg", venv=str, venv_path=""):
+#     conn = sqlite3.connect("_temp_.db")
+#     c = conn.cursor()
+#
+#     c.execute(f"""UPDATE \"{table}\" SET script_name = ?, script_path = ?, venv = ?, venv_path = ?, thumbnail_path = ? WHERE script_name = \"{old_script_name}\")""", (script_name, script_path, venv, venv_path, thumbnail_path))
+#
+#
+#     conn.commit()
+#     conn.close()

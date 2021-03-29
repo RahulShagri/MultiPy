@@ -692,7 +692,7 @@ def open_tool():
                 script_count += 1
 
                 with child(name=f"child??{table[0]}??{script_info[0]}", parent=parent, width=400, height=210):
-                    add_image_button(f"{table[0]}??{script_info[0]}", value=script_info[4],
+                    add_image_button(f"{table[0]}??{script_info[0]}", value=script_info[5],
                                      width=250, height=141, frame_padding=5, callback=categories[table[0]].run_script_dispatcher)
                     add_same_line(spacing=5)
 
