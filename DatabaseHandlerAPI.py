@@ -19,17 +19,18 @@ def create_table(name: str):
                         venv text,
                         venv_path text,
                         cmd text,
-                        thumbnail_path text)""")
+                        thumbnail_path text,
+                        latest_script_name text)""")
 
     conn.commit()
     conn.close()
 
-def add_script(table: str, script_name: str, script_path: str, thumbnail_path="icons/default_thumbnail.jpg", venv=str, venv_path="", cmd=""):
+def add_script(table: str, script_name: str, script_path: str, venv: str, latest_script_name: str, venv_path="", cmd="",thumbnail_path="icons/default_thumbnail.jpg"):
     conn = sqlite3.connect("_temp_.db")
     c = conn.cursor()
 
-    c.execute(f"""INSERT INTO \"{table}\" (script_name, script_path, venv, venv_path, thumbnail_path, cmd)
-            VALUES (?, ?, ?, ?, ?, ?)""", (script_name, script_path, venv, venv_path, thumbnail_path, cmd))
+    c.execute(f"""INSERT INTO \"{table}\" (script_name, script_path, venv, venv_path, thumbnail_path, cmd, latest_script_name)
+            VALUES (?, ?, ?, ?, ?, ?, ?)""", (script_name, script_path, venv, venv_path, thumbnail_path, cmd, latest_script_name))
 
     conn.commit()
     conn.close()
@@ -80,7 +81,7 @@ def read_all_scripts(table: str):
     conn = sqlite3.connect("_temp_.db")
     c = conn.cursor()
 
-    c.execute(f"SELECT script_name, thumbnail_path FROM \"{table}\"")
+    c.execute(f"SELECT script_name, thumbnail_path, latest_script_name FROM \"{table}\"")
     script_info = c.fetchall()
     conn.commit()
     conn.close()
@@ -140,12 +141,12 @@ def read_all():
 
     return tables, scripts
 
-# def update_script(table: str, old_script_name: str, script_name: str, script_path: str, thumbnail_path="icons/default_thumbnail.jpg", venv=str, venv_path=""):
-#     conn = sqlite3.connect("_temp_.db")
-#     c = conn.cursor()
-#
-#     c.execute(f"""UPDATE \"{table}\" SET script_name = ?, script_path = ?, venv = ?, venv_path = ?, thumbnail_path = ? WHERE script_name = \"{old_script_name}\")""", (script_name, script_path, venv, venv_path, thumbnail_path))
-#
-#
-#     conn.commit()
-#     conn.close()
+def update_script(table: str, old_script_name: str, latest_script_name: str, script_path: str, thumbnail_path="icons/default_thumbnail.jpg", cmd="", venv=str, venv_path=""):
+    conn = sqlite3.connect("_temp_.db")
+    c = conn.cursor()
+
+    c.execute(f"""UPDATE \"{table}\" SET script_path = ?, venv = ?, venv_path = ?, cmd = ?, thumbnail_path = ?, latest_script_name = ? WHERE script_name = \"{old_script_name}\"""", (script_path, venv, venv_path, cmd, thumbnail_path, latest_script_name))
+
+
+    conn.commit()
+    conn.close()
