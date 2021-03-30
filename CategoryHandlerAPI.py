@@ -224,7 +224,6 @@ class CategoryHandler:
                 add_image_button(name=f"configure??{self.title}??{_temp_script_name_}", value="icons/configure_script_button_dark.png", width=30, height=30)
 
                 # Popup for configuring script info
-
                 with popup(popupparent=f"configure??{self.title}??{_temp_script_name_}",
                            name=f"Configure script##{self.title}??{_temp_script_name_}", mousebutton=mvMouseButton_Left, modal=True):
 
@@ -445,10 +444,112 @@ class CategoryHandler:
                                      callback=self.delete_script)
                     add_image_button(name=f"configure??{self.title}??{script_name}", value="icons/configure_script_button_dark.png", width=30, height=30)
 
+                    # Popup for configuring script info
+                    with popup(popupparent=f"configure??{self.title}??{script_name}",
+                               name=f"Configure script##{self.title}??{script_name}",
+                               mousebutton=mvMouseButton_Left, modal=True):
+
+                        script_info = get_script_info(table=self.title, script=script_name)
+                        print(script_info)
+
+                        set_item_style_var(item=f"Configure script##{self.title}??{script_name}",
+                                           style=mvGuiStyleVar_WindowPadding,
+                                           value=[10, 10])
+                        add_dummy(name="addScriptDummy01", height=10)
+
+                        # script name
+                        add_input_text(name=f"configure_script_name??{self.title}??{script_name}",
+                                       label="    Enter script name",
+                                       hint="Script name", tip="Leave blank to set it the same as the file name.",
+                                       width=250)
+
+                        set_value(f"configure_script_name??{self.title}??{script_name}", value=script_info[6])
+
+                        add_dummy(name="addScriptDummy02", height=20)
+
+                        # script path
+                        add_input_text(name=f"configure_script_path??{self.title}??{script_name}", label="",
+                                       hint="Script path", width=250,
+                                       readonly=True)
+
+                        set_value(f"configure_script_path??{self.title}??{script_name}", value=script_info[1])
+
+                        add_same_line(spacing=5)
+                        add_button(name=f"Find script##configure??{self.title}??{script_name}", width=150,
+                                   callback=self.find_script, callback_data=script_name)
+                        add_dummy(name="addScriptDummy03", height=20)
+
+                        # venv
+                        add_checkbox(
+                            name=f"Script uses virtual environment##configure??{self.title}??{script_name}",
+                            callback=self.enable_venv, callback_data=script_name)
+                        add_dummy(name="addScriptDummy04", height=20)
+                        add_input_text(name=f"configure_venv_path??{self.title}??{script_name}", label="",
+                                       hint="Venv folder path", width=250,
+                                       enabled=False, readonly=True)
+
+                        add_same_line(spacing=5)
+                        add_button(name=f"Find venv folder##configure??{self.title}??{script_name}", width=150,
+                                   enabled=False,
+                                   callback=self.find_venv, callback_data=script_name)
+                        add_dummy(name="addScriptDummy05", height=20)
+
+                        if script_info[2] == "True":
+                            set_value(f"Script uses virtual environment##configure??{self.title}??{script_name}",
+                                      True)
+                            set_value(f"configure_venv_path??{self.title}??{script_name}", script_info[3])
+                            configure_item(f"configure_venv_path??{self.title}??{script_name}", enabled=True)
+                            configure_item(f"Find venv folder##configure??{self.title}??{script_name}",
+                                           enabled=True)
+                        else:
+                            set_value(f"Script uses virtual environment##configure??{self.title}??{script_name}",
+                                      False)
+                            set_value(f"configure_venv_path??{self.title}??{script_name}", "")
+
+                        # show cmd
+                        add_checkbox(
+                            name=f"Show command prompt (cmd) when running##configure??{self.title}??{script_name}")
+                        add_dummy(name="addScriptDummy06", height=20)
+
+                        if script_info[4] == "True":
+                            set_value(
+                                f"Show command prompt (cmd) when running##configure??{self.title}??{script_name}",
+                                True)
+                        else:
+                            set_value(
+                                f"Show command prompt (cmd) when running##configure??{self.title}??{script_name}",
+                                False)
+
+                        # thumbnail
+                        add_input_text(name=f"configure_thumbnail_path??{self.title}??{script_name}", label="",
+                                       hint="Thumbnail file path",
+                                       width=250, readonly=True)
+
+                        if script_info[5] == "icons/default_thumbnail.jpg":
+                            set_value(f"configure_thumbnail_path??{self.title}??{script_name}", "")
+                        else:
+                            set_value(f"configure_thumbnail_path??{self.title}??{script_name}", script_info[5])
+
+                        add_same_line(spacing=5)
+                        add_button(name=f"Add thumbnail##configure??{self.title}??{script_name}", width=150,
+                                   tip="Leave blank to set it to default.", callback=self.find_thumbnail,
+                                   callback_data=script_name)
+                        add_dummy(name="addScriptDummy07", height=20)
+                        add_drawing(name=f"configure_thumbnail??{self.title}??{script_name}", width=410,
+                                    height=231)
+                        draw_image(f"configure_thumbnail??{self.title}??{script_name}", file=script_info[5],
+                                   pmin=[0, 0], pmax=[410, 232])
+
+                        add_dummy(name="addScriptDummy08", height=20)
+                        add_button(f"Update##UpdateScript??{self.title}??{script_name}", width=210,
+                                   callback=self.update_script, callback_data=script_name)
+                        add_same_line(spacing=5.0)
+                        add_button(f"Cancel##UpdateScript??{self.title}??{script_name}", width=210,
+                                   callback=self.close_popups, callback_data=script_name)
+
                 add_text(name=f"script_name_text??{self.title}??{script_name}", default_value=f"{script[2]}", wrap=265)
 
     def update_script(self, sender, data):
-        close_popup(f"Configure script##{self.title}??{data}")
 
         script_name = get_value(f"configure_script_name??{self.title}??{data}")
         script_path = get_value(f"configure_script_path??{self.title}??{data}")
@@ -456,6 +557,17 @@ class CategoryHandler:
         venv_path = get_value(f"configure_venv_path??{self.title}??{data}")
         cmd = str(get_value(f"Show command prompt (cmd) when running##configure??{self.title}??{data}"))
         thumbnail_path = get_value(f"configure_thumbnail_path??{self.title}??{data}")
+
+        if venv == "True":
+            if venv_path == "":
+                if not does_item_exist("Please select a venv path."):
+                    add_text("Please select a venv path.", color=[255, 0, 0],
+                             parent=f"Configure script##{self.title}??{data}", before="addScriptDummy05")
+                    return
+                else:
+                    return
+
+        close_popup(f"Configure script##{self.title}??{data}")
 
         if thumbnail_path != "":
             delete_item(f"{self.title}??{data}")
