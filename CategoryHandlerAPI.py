@@ -48,9 +48,9 @@ class CategoryHandler:
 
                 add_checkbox(name=f"Script uses virtual environment##{self.title}", callback=self.enable_venv)
                 add_dummy(name="addScriptDummy04", height=20)
-                add_input_text(name=f"venv_path??{self.title}", label="", hint="Venv folder path", width=250, enabled=False, readonly=True)
+                add_input_text(name=f"venv_path??{self.title}", label="", hint="activate.bat file path", width=250, enabled=False, readonly=True)
                 add_same_line(spacing=5)
-                add_button(name=f"Find venv folder##{self.title}", width=150, enabled=False, callback=self.find_venv)
+                add_button(name=f"Find activate.bat##{self.title}", width=150, enabled=False, callback=self.find_venv)
                 add_dummy(name="addScriptDummy05", height=20)
 
                 add_checkbox(name=f"Show command prompt (cmd) when running##{self.title}")
@@ -92,8 +92,8 @@ class CategoryHandler:
             if does_item_exist("Script is already in use with the file name."):
                 delete_item("Script is already in use with the file name.")
 
-            if does_item_exist("Please select a venv path."):
-                delete_item("Please select a venv path.")
+            if does_item_exist("Please select an activate.bat file."):
+                delete_item("Please select an activate.bat file.")
 
             close_popup(f"Add new python script##{self.title}")
 
@@ -101,8 +101,8 @@ class CategoryHandler:
             close_popup(f"Are you sure you want to delete this category?##{self.title}")
 
         if re.search("Update", sender):
-            if does_item_exist("Please select a venv path."):
-                delete_item("Please select a venv path.")
+            if does_item_exist("Please select an activate.bat file."):
+                delete_item("Please select an activate.bat file.")
             close_popup(f"Configure script##{self.title}??{data}")
 
     def delete_category(self):
@@ -145,8 +145,16 @@ class CategoryHandler:
 
         if get_value(f"Script uses virtual environment##{self.title}"):
             if not get_value(f"venv_path??{self.title}"):
-                if not does_item_exist("Please select a venv path."):
-                    add_text("Please select a venv path.", color=[255,0,0], parent=f"Add new python script##{self.title}", before="addScriptDummy05")
+                if not does_item_exist("Please select an activate.bat file."):
+                    add_text("Please select an activate.bat file.", color=[255,0,0], parent=f"Add new python script##{self.title}", before="addScriptDummy05")
+                    return
+                else:
+                    return
+
+            if get_value(f"venv_path??{self.title}")[-13:] != "/activate.bat":
+                if not does_item_exist("Please select an activate.bat file."):
+                    add_text("Please select an activate.bat file.", color=[255, 0, 0],
+                             parent=f"Add new python script##{self.title}", before="addScriptDummy05")
                     return
                 else:
                     return
@@ -157,8 +165,8 @@ class CategoryHandler:
         if does_item_exist("Script name already in use. Please use a different name."):
             delete_item("Script name already in use. Please use a different name.")
 
-        if does_item_exist("Please select a venv path."):
-            delete_item("Please select a venv path.")
+        if does_item_exist("Please select an activate.bat file."):
+            delete_item("Please select an activate.bat file.")
 
         parent = self.title
         _temp_script_name_ = get_value(f"script_name??{self.title}")
@@ -230,7 +238,6 @@ class CategoryHandler:
                            name=f"Configure script##{self.title}??{_temp_script_name_}", mousebutton=mvMouseButton_Left, modal=True):
 
                     script_info = get_script_info(table=self.title, script=_temp_script_name_)
-                    print(script_info)
 
                     set_item_style_var(item=f"Configure script##{self.title}??{_temp_script_name_}", style=mvGuiStyleVar_WindowPadding,
                                        value=[10, 10])
@@ -258,11 +265,11 @@ class CategoryHandler:
                     # venv
                     add_checkbox(name=f"Script uses virtual environment##configure??{self.title}??{_temp_script_name_}", callback=self.enable_venv, callback_data=_temp_script_name_)
                     add_dummy(name="updateScriptDummy04", height=20)
-                    add_input_text(name=f"configure_venv_path??{self.title}??{_temp_script_name_}", label="", hint="Venv folder path", width=250,
+                    add_input_text(name=f"configure_venv_path??{self.title}??{_temp_script_name_}", label="", hint="activate.bat file path", width=250,
                                    enabled=False, readonly=True)
 
                     add_same_line(spacing=5)
-                    add_button(name=f"Find venv folder##configure??{self.title}??{_temp_script_name_}", width=150, enabled=False,
+                    add_button(name=f"Find activate.bat##configure??{self.title}??{_temp_script_name_}", width=150, enabled=False,
                                callback=self.find_venv, callback_data=_temp_script_name_)
                     add_dummy(name="updateScriptDummy05", height=20)
 
@@ -270,7 +277,7 @@ class CategoryHandler:
                         set_value(f"Script uses virtual environment##configure??{self.title}??{_temp_script_name_}", True)
                         set_value(f"configure_venv_path??{self.title}??{_temp_script_name_}", script_info[3])
                         configure_item(f"configure_venv_path??{self.title}??{_temp_script_name_}", enabled=True)
-                        configure_item(f"Find venv folder##configure??{self.title}??{_temp_script_name_}", enabled=True)
+                        configure_item(f"Find activate.bat##configure??{self.title}??{_temp_script_name_}", enabled=True)
                     else:
                         set_value(f"Script uses virtual environment##configure??{self.title}??{_temp_script_name_}", False)
                         set_value(f"configure_venv_path??{self.title}??{_temp_script_name_}", "")
@@ -329,7 +336,7 @@ class CategoryHandler:
         script_info = read_to_run_script(table=category, script_name=script)
         file_path = script_info[0].split("/")
         folder_path = ''
-        venv_folder_path = script_info[2] + "/Scripts"
+        venv_folder_path = script_info[2][:-12]
         venv_drive = venv_folder_path.split("/")[0]
         venv_folder_path = venv_folder_path[3:]
 
@@ -352,9 +359,9 @@ class CategoryHandler:
 
             # Main run command on cmd
             if script_info[3] == "True":
-                os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
+                os.system(f'start cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & activate.bat & cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
             else:
-                os.system(f'cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & "activate.bat" & cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
+                os.system(f'cmd /k "cd\\ & {venv_drive} & cd {venv_folder_path} & activate.bat & cd\\ & {file_path[0]} & cd {folder_path} & python.exe "{file_path[-1]}" & exit"')
 
     def run_script_dispatcher(self, sender):
         run_script_thread = threading.Thread(name="runScriptThread", target=self.run_script, args=(sender,),
@@ -375,7 +382,7 @@ class CategoryHandler:
     def run_each_script(self, script_info):
         file_path = script_info[0].split("/")
         folder_path = ''
-        venv_folder_path = script_info[2] + "/Scripts"
+        venv_folder_path = script_info[2][:-12]
         venv_drive = venv_folder_path.split("/")[0]
         venv_folder_path = venv_folder_path[3:]
 
@@ -452,7 +459,6 @@ class CategoryHandler:
                                mousebutton=mvMouseButton_Left, modal=True):
 
                         script_info = get_script_info(table=self.title, script=script_name)
-                        print(script_info)
 
                         set_item_style_var(item=f"Configure script##{self.title}??{script_name}",
                                            style=mvGuiStyleVar_WindowPadding,
@@ -487,11 +493,11 @@ class CategoryHandler:
                             callback=self.enable_venv, callback_data=script_name)
                         add_dummy(name="updateScriptDummy04", height=20)
                         add_input_text(name=f"configure_venv_path??{self.title}??{script_name}", label="",
-                                       hint="Venv folder path", width=250,
+                                       hint="activate.bat file path", width=250,
                                        enabled=False, readonly=True)
 
                         add_same_line(spacing=5)
-                        add_button(name=f"Find venv folder##configure??{self.title}??{script_name}", width=150,
+                        add_button(name=f"Find activate.bat##configure??{self.title}??{script_name}", width=150,
                                    enabled=False,
                                    callback=self.find_venv, callback_data=script_name)
                         add_dummy(name="updateScriptDummy05", height=20)
@@ -501,7 +507,7 @@ class CategoryHandler:
                                       True)
                             set_value(f"configure_venv_path??{self.title}??{script_name}", script_info[3])
                             configure_item(f"configure_venv_path??{self.title}??{script_name}", enabled=True)
-                            configure_item(f"Find venv folder##configure??{self.title}??{script_name}",
+                            configure_item(f"Find activate.bat##configure??{self.title}??{script_name}",
                                            enabled=True)
                         else:
                             set_value(f"Script uses virtual environment##configure??{self.title}??{script_name}",
@@ -560,16 +566,22 @@ class CategoryHandler:
         cmd = str(get_value(f"Show command prompt (cmd) when running##configure??{self.title}??{data}"))
         thumbnail_path = get_value(f"configure_thumbnail_path??{self.title}??{data}")
 
-        if does_item_exist("Please select a venv path."):
-            delete_item("Please select a venv path.")
+        if does_item_exist("Please select an activate.bat file."):
+            delete_item("Please select an activate.bat file.")
 
         if venv == "True":
             if venv_path == "":
-                if not does_item_exist("Please select a venv path."):
-                    add_text("Please select a venv path.", color=[255, 0, 0],
+                if not does_item_exist("Please select an activate.bat file."):
+                    add_text("Please select an activate.bat file.", color=[255, 0, 0],
                              parent=f"Configure script##{self.title}??{data}", before="updateScriptDummy05")
                     return
                 else:
+                    return
+
+            if venv_path[-13:] != "/activate.bat":
+                if not does_item_exist("Please select an activate.bat file."):
+                    add_text("Please select an activate.bat file.", color=[255, 0, 0],
+                             parent=f"Configure script##{self.title}??{data}", before="updateScriptDummy05")
                     return
 
         close_popup(f"Configure script##{self.title}??{data}")
@@ -589,19 +601,19 @@ class CategoryHandler:
     def enable_venv(self, sender, data=""):
         if get_value(sender):
             configure_item(f"venv_path??{self.title}", enabled=True)
-            configure_item(f"Find venv folder##{self.title}", enabled=True)
+            configure_item(f"Find activate.bat##{self.title}", enabled=True)
 
             if re.search("configure", sender):
                 configure_item(f"configure_venv_path??{self.title}??{data}", enabled=True)
-                configure_item(f"Find venv folder##configure??{self.title}??{data}", enabled=True)
+                configure_item(f"Find activate.bat##configure??{self.title}??{data}", enabled=True)
 
         else:
             configure_item(f"venv_path??{self.title}", enabled=False)
-            configure_item(f"Find venv folder##{self.title}", enabled=False)
+            configure_item(f"Find activate.bat##{self.title}", enabled=False)
 
             if re.search("configure", sender):
                 configure_item(f"configure_venv_path??{self.title}??{data}", enabled=False)
-                configure_item(f"Find venv folder##configure??{self.title}??{data}", enabled=False)
+                configure_item(f"Find activate.bat##configure??{self.title}??{data}", enabled=False)
 
     def find_script(self, sender, data=""):
         Tk().withdraw()
@@ -622,16 +634,19 @@ class CategoryHandler:
     def find_venv(self, sender, data=""):
         Tk().withdraw()
 
-        folder_path = askdirectory(title="MultiPy find venv window")
+        file_path = askopenfilename(title="MultiPy find activate.bat file",
+                                    initialfile = "activate.bat",
+                                    filetypes=[("Batch file (*.bat)", "*.bat")],
+                                    defaultextension=[("Batch file (*.bat)", "*.bat")],)
 
-        if folder_path:
-            set_value(f"venv_path??{self.title}", folder_path)
+        if file_path:
+            set_value(f"venv_path??{self.title}", file_path)
 
             if re.search("configure", sender):
-                set_value(f"configure_venv_path??{self.title}??{data}", folder_path)
+                set_value(f"configure_venv_path??{self.title}??{data}", file_path)
 
-            if does_item_exist("Please select a venv path."):
-                delete_item("Please select a venv path.")
+            if does_item_exist("Please select an activate.bat file."):
+                delete_item("Please select an activate.bat file.")
 
     def find_thumbnail(self, sender, data=""):
         Tk().withdraw()
