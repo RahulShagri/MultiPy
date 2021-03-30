@@ -101,6 +101,8 @@ class CategoryHandler:
             close_popup(f"Are you sure you want to delete this category?##{self.title}")
 
         if re.search("Update", sender):
+            if does_item_exist("Please select a venv path."):
+                delete_item("Please select a venv path.")
             close_popup(f"Configure script##{self.title}??{data}")
 
     def delete_category(self):
@@ -232,7 +234,7 @@ class CategoryHandler:
 
                     set_item_style_var(item=f"Configure script##{self.title}??{_temp_script_name_}", style=mvGuiStyleVar_WindowPadding,
                                        value=[10, 10])
-                    add_dummy(name="addScriptDummy01", height=10)
+                    add_dummy(name="updateScriptDummy01", height=10)
 
                     # script name
                     add_input_text(name=f"configure_script_name??{self.title}??{_temp_script_name_}", label="    Enter script name",
@@ -241,7 +243,7 @@ class CategoryHandler:
 
                     set_value(f"configure_script_name??{self.title}??{_temp_script_name_}", value=script_info[0])
 
-                    add_dummy(name="addScriptDummy02", height=20)
+                    add_dummy(name="updateScriptDummy02", height=20)
 
                     # script path
                     add_input_text(name=f"configure_script_path??{self.title}??{_temp_script_name_}", label="", hint="Script path", width=250,
@@ -251,18 +253,18 @@ class CategoryHandler:
 
                     add_same_line(spacing=5)
                     add_button(name=f"Find script##configure??{self.title}??{_temp_script_name_}", width=150, callback=self.find_script, callback_data=_temp_script_name_)
-                    add_dummy(name="addScriptDummy03", height=20)
+                    add_dummy(name="updateScriptDummy03", height=20)
 
                     # venv
                     add_checkbox(name=f"Script uses virtual environment##configure??{self.title}??{_temp_script_name_}", callback=self.enable_venv, callback_data=_temp_script_name_)
-                    add_dummy(name="addScriptDummy04", height=20)
+                    add_dummy(name="updateScriptDummy04", height=20)
                     add_input_text(name=f"configure_venv_path??{self.title}??{_temp_script_name_}", label="", hint="Venv folder path", width=250,
                                    enabled=False, readonly=True)
 
                     add_same_line(spacing=5)
                     add_button(name=f"Find venv folder##configure??{self.title}??{_temp_script_name_}", width=150, enabled=False,
                                callback=self.find_venv, callback_data=_temp_script_name_)
-                    add_dummy(name="addScriptDummy05", height=20)
+                    add_dummy(name="updateScriptDummy05", height=20)
 
                     if script_info[2] == "True":
                         set_value(f"Script uses virtual environment##configure??{self.title}??{_temp_script_name_}", True)
@@ -275,7 +277,7 @@ class CategoryHandler:
 
                     # show cmd
                     add_checkbox(name=f"Show command prompt (cmd) when running##configure??{self.title}??{_temp_script_name_}")
-                    add_dummy(name="addScriptDummy06", height=20)
+                    add_dummy(name="updateScriptDummy06", height=20)
 
                     if script_info[4] == "True":
                         set_value(f"Show command prompt (cmd) when running##configure??{self.title}??{_temp_script_name_}", True)
@@ -292,11 +294,11 @@ class CategoryHandler:
                     add_same_line(spacing=5)
                     add_button(name=f"Add thumbnail##configure??{self.title}??{_temp_script_name_}", width=150,
                                tip="Leave blank to set it to default.", callback=self.find_thumbnail, callback_data=_temp_script_name_)
-                    add_dummy(name="addScriptDummy07", height=20)
+                    add_dummy(name="updateScriptDummy07", height=20)
                     add_drawing(name=f"configure_thumbnail??{self.title}??{_temp_script_name_}", width=410, height=231)
                     draw_image(f"configure_thumbnail??{self.title}??{_temp_script_name_}", file=script_info[5], pmin=[0,0], pmax=[410, 232])
 
-                    add_dummy(name="addScriptDummy08", height=20)
+                    add_dummy(name="updateScriptDummy08", height=20)
                     add_button(f"Update##UpdateScript??{self.title}??{_temp_script_name_}", width=210, callback=self.update_script, callback_data=_temp_script_name_)
                     add_same_line(spacing=5.0)
                     add_button(f"Cancel##UpdateScript??{self.title}??{_temp_script_name_}", width=210, callback=self.close_popups, callback_data=_temp_script_name_)
@@ -455,7 +457,7 @@ class CategoryHandler:
                         set_item_style_var(item=f"Configure script##{self.title}??{script_name}",
                                            style=mvGuiStyleVar_WindowPadding,
                                            value=[10, 10])
-                        add_dummy(name="addScriptDummy01", height=10)
+                        add_dummy(name="updateScriptDummy01", height=10)
 
                         # script name
                         add_input_text(name=f"configure_script_name??{self.title}??{script_name}",
@@ -465,7 +467,7 @@ class CategoryHandler:
 
                         set_value(f"configure_script_name??{self.title}??{script_name}", value=script_info[6])
 
-                        add_dummy(name="addScriptDummy02", height=20)
+                        add_dummy(name="updateScriptDummy02", height=20)
 
                         # script path
                         add_input_text(name=f"configure_script_path??{self.title}??{script_name}", label="",
@@ -477,13 +479,13 @@ class CategoryHandler:
                         add_same_line(spacing=5)
                         add_button(name=f"Find script##configure??{self.title}??{script_name}", width=150,
                                    callback=self.find_script, callback_data=script_name)
-                        add_dummy(name="addScriptDummy03", height=20)
+                        add_dummy(name="updateScriptDummy03", height=20)
 
                         # venv
                         add_checkbox(
                             name=f"Script uses virtual environment##configure??{self.title}??{script_name}",
                             callback=self.enable_venv, callback_data=script_name)
-                        add_dummy(name="addScriptDummy04", height=20)
+                        add_dummy(name="updateScriptDummy04", height=20)
                         add_input_text(name=f"configure_venv_path??{self.title}??{script_name}", label="",
                                        hint="Venv folder path", width=250,
                                        enabled=False, readonly=True)
@@ -492,7 +494,7 @@ class CategoryHandler:
                         add_button(name=f"Find venv folder##configure??{self.title}??{script_name}", width=150,
                                    enabled=False,
                                    callback=self.find_venv, callback_data=script_name)
-                        add_dummy(name="addScriptDummy05", height=20)
+                        add_dummy(name="updateScriptDummy05", height=20)
 
                         if script_info[2] == "True":
                             set_value(f"Script uses virtual environment##configure??{self.title}??{script_name}",
@@ -509,7 +511,7 @@ class CategoryHandler:
                         # show cmd
                         add_checkbox(
                             name=f"Show command prompt (cmd) when running##configure??{self.title}??{script_name}")
-                        add_dummy(name="addScriptDummy06", height=20)
+                        add_dummy(name="updateScriptDummy06", height=20)
 
                         if script_info[4] == "True":
                             set_value(
@@ -534,13 +536,13 @@ class CategoryHandler:
                         add_button(name=f"Add thumbnail##configure??{self.title}??{script_name}", width=150,
                                    tip="Leave blank to set it to default.", callback=self.find_thumbnail,
                                    callback_data=script_name)
-                        add_dummy(name="addScriptDummy07", height=20)
+                        add_dummy(name="updateScriptDummy07", height=20)
                         add_drawing(name=f"configure_thumbnail??{self.title}??{script_name}", width=410,
                                     height=231)
                         draw_image(f"configure_thumbnail??{self.title}??{script_name}", file=script_info[5],
                                    pmin=[0, 0], pmax=[410, 232])
 
-                        add_dummy(name="addScriptDummy08", height=20)
+                        add_dummy(name="updateScriptDummy08", height=20)
                         add_button(f"Update##UpdateScript??{self.title}??{script_name}", width=210,
                                    callback=self.update_script, callback_data=script_name)
                         add_same_line(spacing=5.0)
@@ -558,11 +560,14 @@ class CategoryHandler:
         cmd = str(get_value(f"Show command prompt (cmd) when running##configure??{self.title}??{data}"))
         thumbnail_path = get_value(f"configure_thumbnail_path??{self.title}??{data}")
 
+        if does_item_exist("Please select a venv path."):
+            delete_item("Please select a venv path.")
+
         if venv == "True":
             if venv_path == "":
                 if not does_item_exist("Please select a venv path."):
                     add_text("Please select a venv path.", color=[255, 0, 0],
-                             parent=f"Configure script##{self.title}??{data}", before="addScriptDummy05")
+                             parent=f"Configure script##{self.title}??{data}", before="updateScriptDummy05")
                     return
                 else:
                     return
