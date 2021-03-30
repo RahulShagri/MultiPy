@@ -23,7 +23,7 @@ You can choose a name for your categories and scripts, indicate whether your scr
 
 <H3>Instructions</H3>
 
-<b>Important note: MultiPy currently has only been tested on Windows 10 Operating System.</b>
+<b>Important note: MultiPy has only been tested on Windows 10 Operating System.</b>
 
 1. Make sure you have Python 3.6 or later version installed and working
    
