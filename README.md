@@ -17,12 +17,13 @@ You can choose a name for your categories and scripts, indicate whether your scr
 4. Set a thumbnail for better presentation
 5. Run scripts individually
 6. Run all scripts in a category at once
-7. Switch to view-only mode to showcase your apps
-8. Save your dashboard and open it later
+7. Configure all the script details after the script has been added 
+8. Switch to view-only mode to showcase your apps
+9. Save your dashboard and open it later
 
 <H3>Instructions</H3>
 
-<b>Important note: MultiPy only works on Windows 10 Operating System.</b>
+<b>Important note: MultiPy currently has only been tested on Windows 10 Operating System.</b>
 
 1. Make sure you have Python 3.6 or later version installed and working
    
@@ -36,9 +37,9 @@ You can choose a name for your categories and scripts, indicate whether your scr
 
 4. Run the <i>MultiPy.py</i> file to start the application
 5. Ensure you enter unique names for each category
-5. Ensure you enter unique names for each script within a category. Choosing a name is optional. If left blank, the script file name will be chosen as the script name
-6. Select the virtual environment folder where the "Scripts" folder exists
-7. Choosing a thumbnail is optional. A default thumbnail will be used if left blank
+6. Ensure you enter unique names for each script within a category. Choosing a name is optional. If left blank, the script file name will be chosen as the script name
+7. If your script uses a virtual environment, then select the checkbox and find the "activate.bat" file, which can be found in the "Scripts" folder in the virtual environment root folder
+8. Choosing a thumbnail is optional. A default thumbnail will be used if left blank
 
 <h3>Demonstration</h3>
 
