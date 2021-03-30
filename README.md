@@ -4,7 +4,7 @@
 
 <h3>About</h3>
 
-MultiPy is a graphical user interface built using [Dear PyGui Python GUI Framework](https://pypi.org/project/dearpygui/) that lets you conveniently keep a track of your python scripts for personal use or showcase by loading and grouping them into categories. It allows you to either run each script individually or together with just one click.
+MultiPy is a graphical user interface built using [Dear PyGui Python GUI Framework](https://pypi.org/project/dearpygui/) that lets you conveniently keep track of your python scripts for personal use or showcase by loading and grouping them into categories. It allows you to either run each script individually or together with just one click.
 
 You can choose a name for your categories and scripts, indicate whether your script requires a virtual environment to run and select the virtual environment you need, choose whether you want the command prompt to open up, and also choose a thumbnail if you would like to present your work better.
 
