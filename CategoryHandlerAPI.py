@@ -6,7 +6,7 @@ from tkinter.filedialog import asksaveasfilename
 from tkinter.filedialog import askdirectory
 from DatabaseHandlerAPI import *
 import threading
-import win32gui
+#import win32gui
 import re
 
 categories = {}
@@ -629,8 +629,8 @@ def save_tool():
                                   initialfile="MultiPy Dashboard",
                                   filetypes=[("MultiPy File (*.mpy)", "*.mpy")],
                                   defaultextension=[("MultiPy File (*.mpy)", "*.mpy")])
-    hwnd = win32gui.FindWindow(None, "MultiPy")
-    win32gui.SetForegroundWindow(hwnd)
+    # hwnd = win32gui.FindWindow(None, "MultiPy")
+    # win32gui.SetForegroundWindow(hwnd)
 
     if file_path:
         save_all(file_path=file_path)
@@ -641,8 +641,8 @@ def open_tool():
     file_path = askopenfilename(title="MultiPy Open window",
                                 filetypes=[("MultiPy File (*.mpy)", "*.mpy")],
                                 defaultextension=[("MultiPy File (*.mpy)", "*.mpy")])
-    hwnd = win32gui.FindWindow(None, "MultiPy")
-    win32gui.SetForegroundWindow(hwnd)
+    # hwnd = win32gui.FindWindow(None, "MultiPy")
+    # win32gui.SetForegroundWindow(hwnd)
 
     if file_path:
         global categories
