@@ -1,6 +1,6 @@
 # MultiPy
 
-__*Note: Since the release of this app, Dear PyGui has been updated considerably. This app will not run in the newer versions of Dear PyGui. Please note that this app is not being maintained currently.*__
+:warning: __*Note: Since the release of this app, Dear PyGui has been updated considerably. This app will not run in the newer versions of Dear PyGui. Please note that this app is not being maintained currently.*__
 
 ![Intro](readme_resources/intro.gif)
 
